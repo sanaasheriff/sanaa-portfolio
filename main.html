@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sanaa Mohamed Sherif — Data Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1220;
+    --panel: #121A2B;
+    --panel-2: #17203A;
+    --line: #24304C;
+    --ice: #6FE3D6;
+    --ice-dim: #3E7A78;
+    --amber: #F5A93C;
+    --text: #E8ECF3;
+    --text-dim: #8B96AC;
+    --text-faint: #5A657C;
+    --radius: 10px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Public Sans', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection{ background: var(--ice); color: #0B1220; }
+  .mono{ font-family: 'IBM Plex Mono', monospace; }
+
+  /* background grid texture */
+  .grid-bg{
+    position: fixed; inset: 0; z-index: -2;
+    background-image:
+      linear-gradient(rgba(111,227,214,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(111,227,214,0.035) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 90%);
+  }
+  .glow{
+    position: fixed; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 900px; height: 500px; z-index: -1;
+    background: radial-gradient(ellipse at center, rgba(111,227,214,0.10), transparent 70%);
+    pointer-events: none;
+  }
+
+  /* NAV */
+  nav{
+    position: sticky; top: 0; z-index: 50;
+    display:flex; align-items:center; justify-content: space-between;
+    padding: 18px 6vw;
+    background: rgba(11,18,32,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .brand{ font-weight:700; letter-spacing:0.02em; font-size: 15px; }
+  nav .brand span{ color: var(--ice); }
+  nav ul{ list-style:none; display:flex; gap: 28px; }
+  nav a{
+    color: var(--text-dim); text-decoration:none; font-size: 13px;
+    font-family:'IBM Plex Mono',monospace; letter-spacing: 0.03em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  nav a:hover, nav a:focus-visible{ color: var(--ice); }
+  nav a::before{ content: "· "; color: var(--amber); }
+  .nav-links{ display:flex; }
+  @media (max-width: 760px){ .nav-links{ display:none; } }
+
+  section{ padding: 90px 6vw; max-width: 1180px; margin: 0 auto; }
+
+  /* HERO */
+  .hero{
+    padding-top: 70px; padding-bottom: 60px;
+    display:grid; gap: 28px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size: 13px; color: var(--ice);
+    display:flex; align-items:center; gap:10px; letter-spacing:0.04em;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background: var(--ice); box-shadow: 0 0 8px var(--ice); animation: pulse 1.8s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  .console{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    max-width: 720px;
+    box-shadow: 0 20px 60px -30px rgba(0,0,0,0.6);
+  }
+  .console-bar{ display:flex; gap:7px; margin-bottom: 16px; }
+  .console-bar span{ width:10px; height:10px; border-radius:50%; background: var(--line); }
+  .console-bar span:nth-child(1){ background:#E8677A; }
+  .console-bar span:nth-child(2){ background:#F5A93C; }
+  .console-bar span:nth-child(3){ background:#6FE3D6; }
+  .console pre{
+    font-family:'IBM Plex Mono',monospace; font-size: 14.5px; color: var(--text-dim);
+    white-space: pre-wrap; line-height: 1.7;
+  }
+  .console .kw{ color: #C792EA; }
+  .console .str{ color: var(--amber); }
+  .console .out{ color: var(--ice); }
+  .cursor{ display:inline-block; width:8px; height:16px; background: var(--ice); vertical-align:middle; animation: blink 1s steps(1) infinite; margin-left:2px;}
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  h1.title{
+    font-family:'IBM Plex Mono',monospace;
+    font-size: clamp(34px, 5.2vw, 58px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.08;
+  }
+  h1.title .accent{ color: var(--ice); }
+  .role-line{ font-size: 18px; color: var(--text-dim); max-width: 640px; }
+  .role-line b{ color: var(--text); font-weight:600; }
+
+  .hero-cta{ display:flex; gap:14px; flex-wrap:wrap; margin-top: 6px; }
+  .btn{
+    font-family:'IBM Plex Mono',monospace; font-size: 13px;
+    padding: 12px 20px; border-radius: 7px; text-decoration:none;
+    letter-spacing:0.02em; transition: all 0.2s; border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{ background: var(--ice); color: #08131A; font-weight:600; }
+  .btn-primary:hover{ background: #8CEFE4; transform: translateY(-1px); }
+  .btn-ghost{ border-color: var(--line); color: var(--text); background:transparent; }
+  .btn-ghost:hover{ border-color: var(--ice); color: var(--ice); }
+
+  /* STATS STRIP */
+  .stats{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow:hidden; margin-top: 46px;
+  }
+  .stat{ background: var(--panel); padding: 26px 20px; text-align:center; }
+  .stat .num{ font-family:'IBM Plex Mono',monospace; font-size: 30px; font-weight:700; color: var(--ice); }
+  .stat .label{ font-size: 12.5px; color: var(--text-dim); margin-top: 6px; }
+  @media (max-width: 700px){ .stats{ grid-template-columns: repeat(2,1fr);} }
+
+  /* SECTION HEADERS */
+  .sec-head{ margin-bottom: 44px; }
+  .sec-tag{ font-family:'IBM Plex Mono',monospace; color: var(--amber); font-size: 13px; letter-spacing:0.05em; margin-bottom: 10px; }
+  .sec-title{ font-size: clamp(24px,3vw,34px); font-weight: 800; letter-spacing:-0.01em; }
+
+  /* PIPELINE / EXPERIENCE */
+  .pipeline{ position: relative; padding-left: 34px; }
+  .pipeline::before{
+    content:""; position:absolute; left: 10px; top: 8px; bottom: 8px; width: 2px;
+    background: linear-gradient(var(--ice), var(--panel-2) 90%);
+    opacity: 0.4;
+  }
+  .stage{ position: relative; margin-bottom: 18px; }
+  .stage-node{
+    position:absolute; left: -34px; top: 22px; width: 22px; height: 22px; border-radius:50%;
+    background: var(--panel); border: 2px solid var(--ice); display:flex; align-items:center; justify-content:center;
+  }
+  .stage-node::after{ content:""; width:7px; height:7px; background: var(--ice); border-radius:50%; }
+  .stage-card{
+    background: var(--panel); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 24px; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .stage-card:hover{ border-color: var(--ice-dim); background: var(--panel-2); }
+  .stage-head{ display:flex; justify-content:space-between; align-items:flex-start; gap: 16px; flex-wrap:wrap; }
+  .stage-role{ font-weight: 700; font-size: 17px; }
+  .stage-role .co{ color: var(--ice); }
+  .stage-meta{ font-family:'IBM Plex Mono',monospace; font-size: 12.5px; color: var(--text-faint); text-align:right; white-space:nowrap; }
+  .stage-toggle{ font-family:'IBM Plex Mono',monospace; font-size: 12px; color: var(--text-dim); margin-top:4px; }
+  .stage-toggle .chev{ display:inline-block; transition: transform 0.25s; }
+  .stage-card.open .chev{ transform: rotate(90deg); }
+  .stage-body{
+    max-height:0; overflow:hidden; transition: max-height 0.35s ease;
+  }
+  .stage-card.open .stage-body{ max-height: 400px; }
+  .stage-body ul{ margin: 16px 0 4px 18px; color: var(--text-dim); font-size: 14.5px; }
+  .stage-body li{ margin-bottom: 8px; }
+
+  /* PROJECTS */
+  .projects{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 900px){ .projects{ grid-template-columns: 1fr; } }
+  .proj-card{
+    background: var(--panel); border:1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; position:relative; overflow:hidden; transition: transform 0.25s, border-color 0.25s;
+  }
+  .proj-card:hover{ transform: translateY(-4px); border-color: var(--ice-dim); }
+  .proj-card::before{
+    content: attr(data-tag);
+    font-family:'IBM Plex Mono',monospace; font-size: 11px; color: var(--amber);
+    letter-spacing: 0.06em;
+  }
+  .proj-card h3{ margin: 12px 0 10px; font-size: 17px; }
+  .proj-card p{ color: var(--text-dim); font-size: 14px; }
+  .proj-metric{
+    margin-top: 16px; font-family:'IBM Plex Mono',monospace; font-size: 22px; color: var(--ice); font-weight:700;
+  }
+  .proj-metric span{ font-size:12px; color:var(--text-faint); display:block; font-family:'Public Sans',sans-serif; margin-top:2px; font-weight:400; }
+
+  /* SKILLS - filterable */
+  .skill-filters{ display:flex; gap: 10px; flex-wrap:wrap; margin-bottom: 26px; }
+  .filter-chip{
+    font-family:'IBM Plex Mono',monospace; font-size: 12.5px;
+    padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line);
+    background: transparent; color: var(--text-dim); cursor:pointer; transition: all 0.2s;
+  }
+  .filter-chip.active, .filter-chip:hover{ border-color: var(--ice); color: var(--ice); background: rgba(111,227,214,0.06); }
+  .skill-grid{ display:flex; flex-wrap:wrap; gap: 10px; }
+  .skill-pill{
+    font-size: 13.5px; padding: 9px 16px; border-radius: 7px;
+    background: var(--panel); border: 1px solid var(--line); color: var(--text);
+    transition: opacity 0.25s, transform 0.25s;
+  }
+  .skill-pill.hidden{ display:none; }
+
+  /* EDUCATION / CERTS */
+  .split{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width:800px){ .split{ grid-template-columns: 1fr; } }
+  .box{ background: var(--panel); border:1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  .box h3{ font-size: 15px; color: var(--ice); font-family:'IBM Plex Mono',monospace; margin-bottom: 14px; }
+  .box .item{ margin-bottom: 12px; font-size: 14.5px; color: var(--text-dim); }
+  .box .item b{ color: var(--text); font-weight:600; }
+
+  /* CONTACT / FOOTER */
+  footer{
+    border-top: 1px solid var(--line); padding: 60px 6vw 40px; text-align:center;
+  }
+  footer .foot-title{ font-size: clamp(26px,4vw,40px); font-weight:800; margin-bottom: 18px; }
+  footer .foot-title .accent{ color: var(--ice); }
+  .contact-row{ display:flex; gap: 16px; justify-content:center; flex-wrap:wrap; margin: 26px 0 40px; }
+  .contact-row a{
+    font-family:'IBM Plex Mono',monospace; font-size: 13px; color: var(--text-dim);
+    border: 1px solid var(--line); padding: 10px 18px; border-radius: 7px; text-decoration:none;
+    transition: all 0.2s;
+  }
+  .contact-row a:hover{ color: var(--ice); border-color: var(--ice); }
+  footer .foot-note{ color: var(--text-faint); font-size: 12.5px; font-family:'IBM Plex Mono',monospace; }
+
+  .reveal{ opacity:0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in{ opacity:1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow"></div>
+
+<nav>
+  <div class="brand">sanaa<span>.sherif</span></div>
+  <ul class="nav-links">
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#education">education</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow"><span class="dot"></span> AVAILABLE · ABU DHABI, UAE</div>
+
+  <div class="console">
+    <div class="console-bar"><span></span><span></span><span></span></div>
+    <pre><span class="kw">SELECT</span> name, title, years_experience
+<span class="kw">FROM</span> engineers
+<span class="kw">WHERE</span> stack <span class="kw">CONTAINS</span> <span class="str">'snowflake'</span> <span class="kw">AND</span> <span class="str">'llm'</span>;
+
+<span class="out">→ Sanaa Mohamed Sherif | Data & AI Engineer | 3 yrs</span><span class="cursor"></span></pre>
+  </div>
+
+  <h1 class="title">Pipelines that move<br><span class="accent">500K+ records</span> a day —<br>and don't break at 2am.</h1>
+
+  <p class="role-line">I'm a <b>Data Engineer & AI Specialist</b> building ETL pipelines, cloud warehouses, and LLM-powered automation across logistics, tax, and real estate. I turn messy, high-volume data into systems people can actually trust.</p>
+
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#projects">View the work</a>
+    <a class="btn btn-ghost" href="#contact">Get in touch</a>
+  </div>
+
+  <div class="stats reveal">
+    <div class="stat"><div class="num" data-count="500">0</div><div class="label">K+ records processed / day</div></div>
+    <div class="stat"><div class="num" data-count="70">0</div><div class="label">% manual effort cut</div></div>
+    <div class="stat"><div class="num" data-count="95">0</div><div class="label">% extraction accuracy</div></div>
+    <div class="stat"><div class="num" data-count="3">0</div><div class="label">years in data & AI</div></div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="sec-head reveal">
+    <div class="sec-tag">01 · EXTRACT → TRANSFORM → LOAD</div>
+    <div class="sec-title">Experience, staged like a pipeline</div>
+  </div>
+
+  <div class="pipeline">
+
+    <div class="stage reveal">
+      <div class="stage-node"></div>
+      <div class="stage-card" onclick="this.classList.toggle('open')">
+        <div class="stage-head">
+          <div>
+            <div class="stage-role">Data Engineer · <span class="co">Emergere Computing Solutions</span></div>
+          </div>
+          <div class="stage-meta">Mar 2025 – Feb 2026<br>Coimbatore</div>
+        </div>
+        <div class="stage-toggle"><span class="chev">▸</span> click to expand</div>
+        <div class="stage-body">
+          <ul>
+            <li>Designed and deployed end-to-end ETL/ELT pipelines with Matillion and Snowflake for logistics, supply chain, tax, and real estate data — processing 500K+ records daily.</li>
+            <li>Automated API extraction and Snowflake ingestion with Python, cutting manual processing time by 70% and improving SQL query performance by 40% through optimized star-schema models.</li>
+            <li>Built real-time logistics tracking pipelines for 200+ delivery vehicles and Matillion DPC data-quality frameworks to ensure referential integrity.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage reveal">
+      <div class="stage-node"></div>
+      <div class="stage-card" onclick="this.classList.toggle('open')">
+        <div class="stage-head">
+          <div>
+            <div class="stage-role">Junior Data Scientist · <span class="co">Emergere Computing Solutions</span></div>
+          </div>
+          <div class="stage-meta">Aug 2024 – Mar 2025<br>Coimbatore</div>
+        </div>
+        <div class="stage-toggle"><span class="chev">▸</span> click to expand</div>
+        <div class="stage-body">
+          <ul>
+            <li>Built AI-powered automation for payroll reconciliation and form digitization, reducing manual effort from 600+ hours to 30 hours using Azure OpenAI and Document Intelligence (95% extraction accuracy).</li>
+            <li>Designed LLM-powered extraction pipelines with LangChain and NLP-based chatbots to surface insights from large-scale PDF/Excel datasets.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage reveal">
+      <div class="stage-node"></div>
+      <div class="stage-card" onclick="this.classList.toggle('open')">
+        <div class="stage-head">
+          <div>
+            <div class="stage-role">Software Developer Trainee · <span class="co">Calibraint Technologies</span></div>
+          </div>
+          <div class="stage-meta">Sep 2023 – Mar 2024<br>Chennai</div>
+        </div>
+        <div class="stage-toggle"><span class="chev">▸</span> click to expand</div>
+        <div class="stage-body">
+          <ul>
+            <li>Built backend applications and REST APIs using Node.js and MongoDB, gaining hands-on experience in application architecture.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage reveal">
+      <div class="stage-node"></div>
+      <div class="stage-card" onclick="this.classList.toggle('open')">
+        <div class="stage-head">
+          <div>
+            <div class="stage-role">Data Engineering Intern · <span class="co">Emergere Computing Solutions</span></div>
+          </div>
+          <div class="stage-meta">Sep 2022 – Dec 2022<br>Coimbatore</div>
+        </div>
+        <div class="stage-toggle"><span class="chev">▸</span> click to expand</div>
+        <div class="stage-body">
+          <ul>
+            <li>Developed an automated Python Excel-comparison tool to identify discrepancies across large datasets, reducing manual reconciliation effort.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="projects">
+  <div class="sec-head reveal">
+    <div class="sec-tag">02 · KEY PROJECTS</div>
+    <div class="sec-title">Systems built end to end</div>
+  </div>
+  <div class="projects">
+    <div class="proj-card reveal" data-tag="LOGISTICS · ETL">
+      <h3>Logistics Fleet Tracking System</h3>
+      <p>Built ETL pipelines tracking 200+ delivery vehicles, enabling route analytics and full operational visibility.</p>
+      <div class="proj-metric">200+<span>vehicles tracked in real time</span></div>
+    </div>
+    <div class="proj-card reveal" data-tag="AI · AUTOMATION">
+      <h3>AI-Powered Payroll & Form Digitization</h3>
+      <p>Automated payroll and form processing with Azure OpenAI and Document Intelligence.</p>
+      <div class="proj-metric">90%+<span>manual workload cut</span></div>
+    </div>
+    <div class="proj-card reveal" data-tag="LLM · SEARCH">
+      <h3>LLM-Based Document Extraction Platform</h3>
+      <p>Built extraction pipelines for intelligent document search and retrieval across PDF/Excel sources.</p>
+      <div class="proj-metric">95%<span>extraction accuracy</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec-head reveal">
+    <div class="sec-tag">03 · TOOLKIT</div>
+    <div class="sec-title">Filter by category</div>
+  </div>
+  <div class="skill-filters reveal">
+    <button class="filter-chip active" data-filter="all">all</button>
+    <button class="filter-chip" data-filter="etl">data & etl</button>
+    <button class="filter-chip" data-filter="lang">languages & db</button>
+    <button class="filter-chip" data-filter="cloud">cloud</button>
+    <button class="filter-chip" data-filter="ai">ai / ml</button>
+  </div>
+  <div class="skill-grid reveal" id="skillGrid">
+    <div class="skill-pill" data-cat="etl">ETL/ELT Development</div>
+    <div class="skill-pill" data-cat="etl">Data Warehousing</div>
+    <div class="skill-pill" data-cat="etl">Star Schema & Dimensional Modeling</div>
+    <div class="skill-pill" data-cat="etl">Data Migration</div>
+    <div class="skill-pill" data-cat="etl">Real-Time Processing</div>
+    <div class="skill-pill" data-cat="etl">Data Validation</div>
+    <div class="skill-pill" data-cat="etl">API Integration</div>
+    <div class="skill-pill" data-cat="lang">Python</div>
+    <div class="skill-pill" data-cat="lang">SQL</div>
+    <div class="skill-pill" data-cat="lang">JavaScript</div>
+    <div class="skill-pill" data-cat="lang">Node.js</div>
+    <div class="skill-pill" data-cat="lang">Snowflake</div>
+    <div class="skill-pill" data-cat="lang">MySQL</div>
+    <div class="skill-pill" data-cat="lang">SQL Server</div>
+    <div class="skill-pill" data-cat="lang">Azure SQL Database</div>
+    <div class="skill-pill" data-cat="cloud">Azure</div>
+    <div class="skill-pill" data-cat="cloud">Azure OpenAI</div>
+    <div class="skill-pill" data-cat="cloud">Azure Document Intelligence</div>
+    <div class="skill-pill" data-cat="cloud">Blob Storage</div>
+    <div class="skill-pill" data-cat="cloud">Matillion DPC</div>
+    <div class="skill-pill" data-cat="cloud">Azure DevOps</div>
+    <div class="skill-pill" data-cat="cloud">Git</div>
+    <div class="skill-pill" data-cat="ai">Generative AI</div>
+    <div class="skill-pill" data-cat="ai">LLMs</div>
+    <div class="skill-pill" data-cat="ai">LangChain</div>
+    <div class="skill-pill" data-cat="ai">NLP</div>
+    <div class="skill-pill" data-cat="ai">Chatbot Development</div>
+    <div class="skill-pill" data-cat="ai">Scikit-learn</div>
+    <div class="skill-pill" data-cat="ai">Pandas</div>
+    <div class="skill-pill" data-cat="ai">NumPy</div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="sec-head reveal">
+    <div class="sec-tag">04 · CREDENTIALS</div>
+    <div class="sec-title">Education & certifications</div>
+  </div>
+  <div class="split">
+    <div class="box reveal">
+      <h3>// education</h3>
+      <div class="item"><b>M.S. in Integrated Software Systems</b><br>PSG College of Arts & Science, Tamil Nadu, India<br>2019 – 2024 · CGPA 8.95/10</div>
+    </div>
+    <div class="box reveal">
+      <h3>// certifications & publication</h3>
+      <div class="item"><b>Matillion Data Productivity Cloud Certified</b> (2025–2028)</div>
+      <div class="item"><b>Python for Data Science</b> — NPTEL, IIT Madras</div>
+      <div class="item"><b>Foundations: Data, Data, Everywhere</b> — Google Coursera</div>
+      <div class="item"><b>Publication:</b> "Handwritten Text Recognition System using Machine Learning"</div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="foot-title reveal">Let's build the next <span class="accent">pipeline</span>.</div>
+  <p class="reveal" style="color:var(--text-dim); max-width:520px; margin:0 auto;">Open to Data Engineer, AI Engineer, and Data Scientist roles across the UAE and remote-friendly teams.</p>
+  <div class="contact-row reveal">
+    <a href="mailto:msherifsanaa@gmail.com">msherifsanaa@gmail.com</a>
+    <a href="tel:+971541628700">+971 54 162 8700</a>
+    <a href="https://linkedin.com/in/sanaasheriff" target="_blank" rel="noopener">linkedin.com/in/sanaasheriff</a>
+  </div>
+  <div class="foot-note">Abu Dhabi, UAE · Built from a résumé, rendered as a pipeline.</div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Animated counters
+  const counters = document.querySelectorAll('[data-count]');
+  const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-count'), 10);
+        let current = 0;
+        const duration = 1200;
+        const stepTime = 16;
+        const steps = duration / stepTime;
+        const increment = target / steps;
+        const timer = setInterval(() => {
+          current += increment;
+          if(current >= target){ current = target; clearInterval(timer); }
+          el.textContent = Math.floor(current) + (target >= 100 ? '' : (el.parentElement.querySelector('.label').textContent.includes('years') ? '' : ''));
+          el.textContent = Math.floor(current);
+        }, stepTime);
+        counterIO.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterIO.observe(c));
+
+  // Skill filter
+  const chips = document.querySelectorAll('.filter-chip');
+  const pills = document.querySelectorAll('.skill-pill');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const filter = chip.getAttribute('data-filter');
+      pills.forEach(p => {
+        if(filter === 'all' || p.getAttribute('data-cat') === filter){
+          p.classList.remove('hidden');
+        } else {
+          p.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
